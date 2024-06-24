@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Furniture Quotation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+  </style>
+</head>
+
+<body onload="displayInvoiceId()">
+  <div class="quotation-container">
+    <input type="text" id="title-textbox" placeholder="什麼的">
+    <label for="option-a">報價單:</label>
+    <input type="radio" id="option-a" name="option" value="報價單" checked>
+    <br>
+    <label for="option-b">訂購單:</label>
+    <input type="radio" id="option-b" name="option" value="訂購單">
+    <br>
+    <label for="option-c">請款單:</label>
+    <input type="radio" id="option-c" name="option" value="請款單">
+    <br>
+    <br>
+    <input type="number" id="already-paid-input" style="display: none; width: 25%;" placeholder="輸入已支付金額">
+    <br>
+    <label for="invoice-id">單號：</label>
+    <input type="text" id="invoice-id">
+    <label for="name">客戶名稱：</label>
+    <input type="text" id="name">
+    <!-- VIP checkbox -->
+    <label for="vip">VIP：</label>
+    <input type="checkbox" id="vip" name="vip">
+    <br>
+    <label for="address">地址：</label>
+    <input type="text" id="address">
+    <br>
+    <label for="quotation-date">日期：</label>
+    <br>
+    <input type="date" id="quotation-date" name="quotation-date">
+    <br>
+    <label for="contact">聯絡方式：</label>
+    <input type="text" id="contact">
+
+    <label for="invoice-type">發票類型：</label>
+    <input type="radio" id="invoice-type-1" name="invoice-type" value="二聯式發票" checked>
+    <label for="invoice-type-1">二聯式發票</label>
+    <input type="radio" id="invoice-type-2" name="invoice-type" value="三聯式發票">
+    <label for="invoice-type-2">三聯式發票</label> <br><br>
+
+    <label for="vat">統一編號：</label>
+    <input type="text" id="vat">
+    <label for="invoice">發票抬頭：</label>
+    <input type="text" id="invoice">
+
+  </div>
+  <br>
+  <div class="quotation-container">
+    <h1>TS DECO 報價單</h1>
+    <div id="quotation-items"></div>
+    <button id="add-item-btn">加商品</button>
+    <br>
+    <br>
+    <label for="quotation-total">總金額: </label>
+    <div id="quotation-total">Total：</div>
+    <br>
+
+    <div id="vip-discount"></div>
+    <div id="grand-total-after-discount"></div>
+    <div id="tax"></div>
+
+    <br>
+    <input type="checkbox" id="display-tax-checkbox" name="display-tax-checkbox">
+    <label for="display-tax">顯示稅 (稅另計)？</label>
+    <br>
+    <div id="display-tax-amount"></div>
+    <div id="display-grand-total"></div>
+    <br>
+    <input type="checkbox" id="signature-checkbox" name="signature-checkbox">
+    <label for="signature">需要客戶簽名?</label>
+
+    <br>
+    <br>
+    <label for="editable-total">自行輸入 特價總金額：</label>
+    <br>
+    <input type="number" id="editable-total" style="width: 25%;" />
+    <br>
+    <br>
+    <label for="payment-type">付款方式：</label>
+    <br>
+    <input type="radio" id="payment-type-cs" name="payment-type" value="cs">
+    <label for="payment-type-cs">CS 收款資料</label>
+    <br>
+    <input type="radio" id="payment-type-ts" name="payment-type" value="ts" checked>
+    <label for="payment-type-ts">TS 收款資料</label>
+    <br>
+    <input type="radio" id="payment-type-3" name="payment-type" value="3">
+    <label for="payment-type-3">不放收款資料</label>
+    <br>
+    <br>
+    <input type="checkbox" id="deposit-checkbox" name="deposit-checkbox" checked>
+    <label for="deposit-checkbox">顯示定金訊息</label>
+    <br>
+    <br>
+    <textarea id="remarksInput" type="text" placeholder="備註" style="height: 80px;"></textarea>
+    <br>
+    <button id="print-btn">打印轉PDF</button>
+    <br>
+    <button id="save-btn">儲存草稿</button>
+    <input type="file" id="load-btn" accept=".json">
+    <br>
+    <button id="generate-pdf">直接轉PDF</button>
+    <button id="generate-image">轉PNG</button>
+
+  </div>
+
+  <div id="container" class="container">
+    <div class="header">
+
+      <div class="left-header">
+      </div>
+      <div class="right-header">
+        <!-- <h1>特舍傢飾有限公司<br>TS DECO</h1>
+          <p>台北市內湖區行愛路140巷27號1F<br>
+            (02)2837 5009<br>
+            cs@tsc.tw<br> 
+        </p> -->
+      </div>
+      <div style="clear:both;"></div>
+    </div>
+
+    <h2 id="quotation-title" style="text-align: left;">報價單</h2>
+
+    <table id="quotation-table">
+      <thead>
+        <tr>
+
+          <th>名稱</th>
+          <th style="width: 150px;">參考圖片</th>
+          <th>規格</th>
+          <th>材質</th>
+          <th style="width: 28px;">數量</th>
+          <th>單價</th>
+          <th>價格</th>
+          <th>備註</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="sub-footer">
+      <div class="terms-notes">
+        <h3 style="font-size: 20px; margin-bottom: 0; margin-top: 0;">誠舍｜特舍傢飾</h3>
+        <p class="contact-info">
+          台北市內湖區行愛路140像27號一樓<br>
+          TEL: 02-2837-5009｜FAX: 02-2837-5010<br>
+          EMAIL: cs@tsc.tw ｜ www.csts.com.tw
+        </p>
+        <strong class="payment-info" id="payment-info">
+          銀行名稱：國泰世華銀行 天母分行（銀行代碼 013）<br>
+          收款人資料 ：特舍傢飾有限公司，帳號：012030004432
+        </strong>
+        <p class="remarks" id="remarks" style="width: 100%; border: solid black 1px; padding: 5px; display: none;">
+
+        </p>
+
+      </div>
+      <div class="inline-container">
+        <table>
+
+          <tr>
+            <td id="total-amount-label">訂購商品總額(含稅)</td>
+            <td id="total-amount"></td>
+          </tr>
+
+          <tr id="if-vip" style="display: none;">
+            <td id="vip-label">VIP 優惠</td>
+            <td class="vip-discount" id="if-vip-discount"></td>
+          </tr>
+
+          <tr id="excl-tax" style="display: none;">
+            <td>營業稅</td>
+            <td id="tax-amount"></td>
+          </tr>
+
+          <tr id="grand-total-row" style="display: none;">
+            <td id="grand-total-label">總金額</td>
+            <td class="grand-total" id="grand-total"></td>
+          </tr>
+
+          <tr id="special-price-row" style="display: none;">
+            <td>特價總金額</td>
+            <td id="special-price"></td>
+          </tr>
+
+          <tr id="already-paid-amount-row" style="display: none;">
+            <td id="already-paid-amount-label">已付訂金</td>
+            <td id="already-paid-amount"></td>
+          </tr>
+          <tr id="to-pay-amount-row" style="display: none;">
+            <td id="to-pay-amount-label">應付餘額</td>
+            <td id="to-pay-amount" style="color: red;"></td>
+          </tr>
+
+          <tr id="signature" style="height: 50px; display: none;">
+            <td id="signature-label">客戶簽名</td>
+            <td id="to-sign"></td>
+          </tr>
+
+        </table>
+
+        <div class="notes-container">
+          <p>請支付訂金（總金額的30%）以確定訂單成立並開始製作，製作時間將依商品不同而定，訂製完成並送達後方收取尾款。</p>
+        </div>
+      </div>
+    </div>
+    <h3></h3>
+
+    <div class="footer">
+      <hr>
+      <div class="left-footer">
+        <p>感謝您的訂購！我們衷心感謝您對我們產品的信任與支持。如果您有任何疑問或需要協助，請隨時聯繫我們。我們期待著能夠為您提供優質的服務。</p>
+      </div>
+      <div class="right-footer">
+        <!-- <p>Sincerely,<br>
+          [Your Name]<br>
+          [Your Position]<br>
+          [Your Contact Information]</p> 1-->
+        <img class="footer-image" id="footer-image" src="https://static.wixstatic.com/media/48bca7_a379ce21f94243658e2e26164c831c55~mv2.jpg" width="58px" alt="landing">
+      </div>
+      <div style="clear:both;"></div>
+    </div>
+  </div>
+</body>
+</html>
