@@ -1,0 +1,535 @@
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      font-family: monospace;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 18px;
+    }
+
+    .quotation-container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .quotation-container input[type="text"],
+    .quotation-container input[type="number"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    #quotation-date {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .quotation-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .quotation-item h2 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #333;
+      text-align: left;
+    }
+
+    .quotation-item input[type="text"],
+    .quotation-item input[type="number"],
+    .quotation-item input[type="file"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .quotation-item textarea {
+      width: 100%;
+      height: 80px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      background-color: #f8f8f8;
+      font-size: 16px;
+      resize: none;
+    }
+
+    .quotation-item img.item-image {
+      max-width: 250px;
+      height: auto;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .quotation-item button.remove-item-btn {
+      padding: 8px 16px;
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .quotation-item button.remove-item-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    #add-item-btn,
+    #print-btn,
+    #generate-image,
+    #generate-pdf {
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Style for save button */
+    #save-btn {
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #save-btn:hover {
+      background-color: #0b7dda;
+    }
+
+    /* Style for load button */
+    #load-btn {
+      width: 25%;
+      padding: 10px 10px;
+      margin-top: 20px;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #load-btn:hover {
+      background-color: #45a049;
+    }
+
+    #add-item-btn:hover,
+    #print-btn:hover {
+      background-color: #45a049;
+    }
+
+    .container {
+      display: none;
+      font-family: monospace;
+      font-size: 14px;
+      color: #333;
+      text-align: right;
+      margin-bottom: 5px;
+    }
+
+    .container .header {
+      text-align: left;
+      margin-bottom: 5px;
+      font-size: 14px;
+      overflow: hidden;
+    }
+
+    .left-header {
+      width: 100%;
+      float: left;
+      text-align: left;
+      word-wrap: break-word;
+    }
+
+    .right-header {
+      width: 0%;
+      /* Adjust the width as needed */
+      float: right;
+      text-align: right;
+    }
+
+    .right-header img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .sub-footer {
+      overflow: hidden;
+      /* Clear floats */
+    }
+
+    .terms-notes {
+      float: left;
+      width: 50%;
+      text-align: left;
+    }
+
+    .contact-info {
+      font-family: monospace;
+    }
+
+    .sub-footer .inline-container table {
+      width: 50%;
+      border-collapse: collapse;
+      align: right;
+      empty-cells: hide;
+    }
+
+    .sub-footer .inline-container td {
+      padding: 5px;
+      border: 1px solid #000;
+      text-align: right;
+      /* Align text to the right */
+    }
+
+    .sub-footer .inline-container tr:has(td:empty) {
+      display: none;
+    }
+
+    .sub-footer .inline-container td:first-child {
+      width: 50%;
+      background-color: #c6a47e;
+      text-align: right;
+      /* Align text to the left for the first column */
+    }
+
+    .sub-footer .inline-container h3 {
+      display: inline-block;
+      margin-right: 10px;
+      /* Adjust as needed to create spacing between elements */
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: center;
+      font-weight: normal;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    th {
+      background-color: #c6a47e;
+    }
+
+    .inline-container {
+      position: relative;
+      /* Ensure the container is positioned relative */
+    }
+
+    .notes-container {
+      font-size: 10px;
+      /* Set the text size to 10 pixels */
+      float: right;
+      position: static;
+      /* Position absolutely */
+      top: 0;
+      /* Position it below the table */
+      right: 0;
+      /* Align it to the right */
+      width: 100%;
+      /* Take full width of the parent container */
+      text-align: left;
+      /* Align text to the right */
+      max-width: 50%;
+      /* Limit the maximum width to control text wrapping */
+      word-wrap: break-word;
+      /* Break long words to fit within container */
+    }
+
+    hr {
+      border: 1px solid #000;
+      /* Border style */
+      margin: 20px 0;
+      /* Adjust margin as needed */
+      /* Additional styling properties */
+    }
+
+    .footer {
+      margin-top: 20px;
+      overflow: hidden;
+      /* Clear floats */
+    }
+
+    .left-footer {
+      width: 66%;
+      float: left;
+      text-align: left;
+    }
+
+    .right-footer {
+      width: 34%;
+      float: left;
+    }
+
+    .right-footer img,
+    .right-footer p {
+      display: inline-block;
+      text-align: right;
+    }
+
+    /* CSS for print */
+    @media print {
+      body {
+        background-color: #fff;
+        padding: 0;
+      }
+
+      .quotation-container {
+        margin: auto;
+        padding: 20px;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .quotation-item {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .quotation-item h2 {
+        font-size: 18px;
+      }
+
+      .quotation-item img.item-image {
+        max-width: 100%;
+        max-height: 120px;
+      }
+
+      #quotation-items {
+        display: block !important;
+      }
+
+      #add-item-btn,
+      #print-btn {
+        display: none;
+      }
+
+      .container {
+        display: none;
+        font-family: monospace;
+        font-size: 14px;
+        color: #333;
+        text-align: right;
+        margin-bottom: 5px;
+      }
+
+      .container .header {
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 14px;
+        overflow: hidden;
+      }
+
+      .left-header {
+        width: 100%;
+        float: left;
+        text-align: left;
+        word-wrap: break-word;
+      }
+
+      .right-header {
+        width: 100%;
+        /* Adjust the width as needed */
+        float: right;
+        text-align: right;
+      }
+
+      .right-header img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .sub-footer {
+        overflow: hidden;
+        /* Clear floats */
+      }
+
+      .terms-notes {
+        float: left;
+        width: 50%;
+        text-align: left;
+      }
+
+      .contact-info {
+        font-family: monospace;
+      }
+
+      .sub-footer .inline-container table {
+        width: 50%;
+        border-collapse: collapse;
+        align: right;
+        empty-cells: hide;
+      }
+
+      .sub-footer .inline-container td {
+        padding: 5px;
+        border: 1px solid #000;
+        text-align: right;
+        font-weight: bold;
+        /* Align text to the right */
+      }
+
+      .sub-footer .inline-container tr:has(td:empty) {
+        display: none;
+      }
+
+      .sub-footer .inline-container td:first-child {
+        width: 50%;
+        background-color: #f0ebe5;
+        font-weight: bold;
+        text-align: right;
+        /* Align text to the left for the first column */
+      }
+
+      .sub-footer .inline-container h3 {
+        display: inline-block;
+        margin-right: 10px;
+        /* Adjust as needed to create spacing between elements */
+      }
+
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: center;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+      }
+
+      th {
+        background-color: #f0ebe5;
+      }
+
+      .inline-container {
+        position: relative;
+        /* Ensure the container is positioned relative */
+      }
+
+      .notes-container {
+        font-size: 13px;
+        /* Set the text size to 10 pixels */
+        float: right;
+        position: static;
+        /* Position absolutely */
+        top: 0;
+        /* Position it below the table */
+        right: 0;
+        /* Align it to the right */
+        width: 100%;
+        /* Take full width of the parent container */
+        text-align: left;
+        /* Align text to the right */
+        max-width: 50%;
+        /* Limit the maximum width to control text wrapping */
+        word-wrap: break-word;
+        /* Break long words to fit within container */
+      }
+
+      hr {
+        border: 1px solid #000;
+        /* Border style */
+        margin: 20px 0;
+        /* Adjust margin as needed */
+        /* Additional styling properties */
+      }
+
+      .footer {
+        margin-top: 20px;
+        overflow: hidden;
+        /* Clear floats */
+      }
+
+      .left-footer {
+        width: 66%;
+        float: left;
+        text-align: left;
+      }
+
+      .right-footer {
+        width: 34%;
+        float: left;
+      }
+
+      .right-footer img,
+      .right-footer p {
+        display: inline-block;
+        text-align: right;
+      }
+    }
+
+    /* CSS styles for print */
+    @media print {
+
+      /* Hide the print button */
+      #print-btn,
+      .quotation-item input[type="file"],
+      .quotation-item button.remove-item-btn,
+      #add-item-btn,
+      .quotation-container {
+        display: none;
+      }
+
+      /* Display items side by side in print */
+      #quotation-items {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      /* Ensure items appear side by side in print */
+      .quotation-item {
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
